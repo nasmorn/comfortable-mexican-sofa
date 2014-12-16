@@ -29,6 +29,7 @@ window.CMS.init = ->
   CMS.wysiwyg()
   CMS.codemirror()
   CMS.sortable_list()
+  CMS.sortable_sections()
   CMS.timepicker()
   CMS.page_blocks()
   CMS.mirrors()
@@ -89,6 +90,16 @@ window.CMS.sortable_list = ->
     update: ->
       $.post("#{CMS.current_path}/reorder", "_method=put&#{$(this).sortable('serialize')}")
 
+
+window.CMS.sortable_sections = ->
+  $('.sortable_sections').sortable
+    handle: 'div.dragger'
+    axis:   'y'
+    start: ->
+      tinymce.remove()
+    update: -> 
+      i = 0
+      $(item).children(".position").val(i++) for item in $(this).children("li")
 
 window.CMS.timepicker = ->
   $('input[type=text][data-cms-datetime]').datetimepicker

@@ -36,7 +36,18 @@ class Comfy::Admin::Cms::PagesController < Comfy::Admin::Cms::BaseController
   end
 
   def update
-    @page.save!
+    @page.transaction do 
+      if params[:sections_attributes]
+        params[:sections_attributes].values.each do |section|
+          p = Comfy::Cms::Page.find(section[:id])
+          p.blocks_attributes = section[:blocks_attributes]
+          p.position = section[:position]
+          p.save
+        end
+      end
+
+      @page.save!
+    end
     flash[:success] = I18n.t('comfy.admin.cms.pages.updated')
     redirect_to :action => :edit, :id => @page
   rescue ActiveRecord::RecordInvalid
@@ -79,7 +90,7 @@ protected
   end
 
   def pages_grouped_by_parent
-    @site.pages.includes(:categories).group_by(&:parent_id)
+    @site.pages.where("slug IS NULL OR slug NOT LIKE ?", "section-%").includes(:categories).group_by(&:parent_id)
   end
 
   def check_for_layouts

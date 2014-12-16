@@ -1,0 +1,39 @@
+%hr
+%ul.list.sortable_sections
+  - sub_pages = page.children.select {|child| child.slug.split("-").first == "section" && child.slug.gsub("section-","") =~ Regexp.new('\A' + section_identifier.dasherize)}
+  - sub_pages.each_with_index do |sub_page, idx|
+    - namespace = { }
+    - cms_object = sub_page
+    - tags = cms_object.tags(true).select{|t| t.is_cms_block?}.uniq{|t| t.identifier}
+    - tags.each do |tag|
+      - namespace[tag.namespace || 'default'] ||= []
+      - namespace[tag.namespace || 'default'] << tag
+
+    
+    %li{:id => dom_id(sub_page)}
+      = sub_page.slug
+      - if tags.empty?
+        .no-tags
+          = link_to cms_object.layout.label, edit_comfy_admin_cms_site_layout_path(@site, cms_object.layout)
+          = t('.no_tags').html_safe
+
+      - else
+        = fields_for :section_blocks, nil, :builder => ComfortableMexicanSofa::FormBuilder, :layout => :horizontal do |cms_blocks|
+          = hidden_field_tag "[sections_attributes][#{section_block_index + idx}]id", sub_page.id
+          = hidden_field_tag "[sections_attributes][#{section_block_index + idx}]position", sub_page.position, class: "position"
+
+          - block_index = 0
+          - namespace.each_with_index do |(name, tags), index|
+            - tags.each do |tag|
+              - begin
+                = cms_blocks.send(tag.class.to_s.demodulize.underscore, tag, block_index, "[sections_attributes][#{section_block_index + idx}]")
+              - rescue
+                - Rails.env.production?? nil : raise
+              - block_index += 1
+
+      - if sub_pages.count > 1
+        .icon{:class => 'published' }
+          .dragger
+            %span &#8645;
+
+%hr

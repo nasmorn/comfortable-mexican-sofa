@@ -10,7 +10,8 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     label       = tag.blockable.class.human_attribute_name(tag.identifier.to_s)
     css_class   = tag.class.to_s.demodulize.underscore
     content     = ''
-    fieldname   = field_name_for(tag)
+    fieldname   = options.delete(:fieldname) || field_name_for(tag)
+
     case method
     when :file_field_tag
       input_params = {:id => nil}
@@ -46,12 +47,12 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     default_tag_field(tag, index)
   end
 
-  def field_text(tag, index)
+  def field_text(tag, index, fieldname = nil)
     default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/html'})
   end
 
-  def field_rich_text(tag, index)
-    default_tag_field(tag, index, :text_area_tag, :data => {'cms-rich-text' => true})
+  def field_rich_text(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :text_area_tag, :data => {'cms-rich-text' => true}, fieldname: fieldname)
   end
 
   def field_boolean(tag, index)
@@ -72,16 +73,16 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     default_tag_field(tag, index, :number_field_tag)
   end
 
-  def page_string(tag, index)
-    default_tag_field(tag, index)
+  def page_string(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :text_field_tag, fieldname: fieldname)
   end
 
-  def page_text(tag, index)
-    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/html'})
+  def page_text(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/html'}, fieldname: fieldname)
   end
 
-  def page_rich_text(tag, index)
-    default_tag_field(tag, index, :text_area_tag, :data => {'cms-rich-text' => true})
+  def page_rich_text(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :text_area_tag, :data => {'cms-rich-text' => true}, fieldname: fieldname)
   end
 
   def page_file(tag, index)
