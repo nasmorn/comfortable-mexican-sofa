@@ -95,11 +95,12 @@ window.CMS.sortable_sections = ->
   $('.sortable_sections').sortable
     handle: 'div.dragger'
     axis:   'y'
-    start: ->
-      tinymce.remove()
-    update: -> 
+    start: (event, ui)->
+      tinymce.EditorManager.execCommand('mceRemoveEditor',true, ui.item.find("textarea").attr("id"))
+    update: (event, ui)-> 
       i = 0
       $(item).children(".position").val(i++) for item in $(this).children("li")
+      tinymce.EditorManager.execCommand('mceAddEditor',true,ui.item.find("textarea").attr("id"))
 
 window.CMS.timepicker = ->
   $('input[type=text][data-cms-datetime]').datetimepicker

@@ -26,10 +26,7 @@
             .tab-pane{:id => "ns-#{name}", :class => index == 0 ? 'active' : nil}
               - tags.each do |tag|
                 - begin
-                  - if tag.class.to_s.demodulize.underscore == "page_section"
-                    = render 'section', page: cms_object, section_identifier: tag.identifier, section_block_index: block_index
-                  - else
-                    = cms_blocks.send(tag.class.to_s.demodulize.underscore, tag, block_index)
+                  = cms_blocks.send(tag.class.to_s.demodulize.underscore, tag, block_index)
                 - rescue
                   - Rails.env.production?? nil : raise
                 - block_index += 1

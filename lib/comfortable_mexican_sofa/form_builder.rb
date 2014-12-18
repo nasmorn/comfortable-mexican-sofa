@@ -35,20 +35,20 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     end
   end
 
-  def field_date_time(tag, index)
-    default_tag_field(tag, index, :text_field_tag, :data => {'cms-datetime' => true})
+  def field_date_time(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :text_field_tag, :data => {'cms-datetime' => true}, fieldname: fieldnam)
   end
 
-  def field_integer(tag, index)
-    default_tag_field(tag, index, :number_field_tag)
+  def field_integer(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :number_field_tag, fieldname: fieldnam)
   end
 
-  def field_string(tag, index)
-    default_tag_field(tag, index)
+  def field_string(tag, index, fieldname = nil)
+    default_tag_field(tag, index, fieldname: fieldnam)
   end
 
   def field_text(tag, index, fieldname = nil)
-    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/html'})
+    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/html'}, fieldname: fieldnam)
   end
 
   def field_rich_text(tag, index, fieldname = nil)
@@ -65,12 +65,12 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     end
   end
 
-  def page_date_time(tag, index)
-    default_tag_field(tag, index, :text_field_tag, :data => {'cms-datetime' => true})
+  def page_date_time(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :text_field_tag, :data => {'cms-datetime' => true}, fieldname: fieldname)
   end
 
-  def page_integer(tag, index)
-    default_tag_field(tag, index, :number_field_tag)
+  def page_integer(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :number_field_tag, fieldname: fieldname)
   end
 
   def page_string(tag, index, fieldname = nil)
@@ -85,25 +85,25 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     default_tag_field(tag, index, :text_area_tag, :data => {'cms-rich-text' => true}, fieldname: fieldname)
   end
 
-  def page_file(tag, index)
-    default_tag_field(tag, index, :file_field_tag)
+  def page_file(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :file_field_tag, fieldname: fieldname)
   end
 
-  def page_files(tag, index)
-    default_tag_field(tag, index, :file_field_tag, :multiple => true)
+  def page_files(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :file_field_tag, :multiple => true, fieldname: fieldname)
   end
 
-  def page_markdown(tag, index)
-    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/x-markdown'})
+  def page_markdown(tag, index, fieldname = nil)
+    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/x-markdown'}, fieldname: fieldname)
   end
 
-  def collection(tag, index)
+  def collection(tag, index, fieldname = nil)
     options = [["---- Select #{tag.collection_class.titleize} ----", nil]] +
       tag.collection_objects.collect do |m|
         [m.send(tag.collection_title), m.send(tag.collection_identifier)]
       end
 
-    fieldname = field_name_for(tag)
+    fieldname ||= field_name_for(tag)
     content = @template.select_tag(
       "#{fieldname}[blocks_attributes][#{index}][content]",
       @template.options_for_select(options, :selected => tag.content),
@@ -113,6 +113,10 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     form_group :label => {:text => tag.identifier.titleize}, :class => tag.class.to_s.demodulize.underscore do
       content
     end
+  end
+
+  def page_section(tag, index, fieldname = nil)
+    @template.render(:partial => 'comfy/admin/cms/pages/section', :object => tag.sub_pages)
   end
 
 end
