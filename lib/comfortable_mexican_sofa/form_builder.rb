@@ -116,7 +116,7 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
   end
 
   def page_section(tag, index, fieldname = nil)
-    @template.render(:partial => 'comfy/admin/cms/pages/section', :object => tag.sub_pages)
+    @template.render(:partial => 'comfy/admin/cms/pages/section', :object => tag)
   end
 
 end

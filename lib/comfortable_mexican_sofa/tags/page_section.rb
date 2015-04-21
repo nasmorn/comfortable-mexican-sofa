@@ -7,7 +7,15 @@ class ComfortableMexicanSofa::Tag::PageSection
   end
 
   def sub_pages
-    blockable.children.select {|child| child.slug.split("-").first == "section" && child.slug.gsub("section-","") =~ Regexp.new('\A' + identifier.dasherize)}
+    blockable.sections.select {|child| child.tag_identifier == identifier}
+  end
+
+  def layouts
+    if self.params[0]
+      self.params[0].split(" ")
+    else
+      []
+    end
   end
   
   def content

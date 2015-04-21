@@ -1,30 +1,12 @@
 %hr
+- Comfy::Cms::Section.layouts(section.layouts).each do |layout|
+  - fields = render("section_fields", sub_page: Comfy::Cms::Section.new(layout_id: layout.id, tag_identifier: section.identifier) )
+  = content_tag(:button, "Neuer Block (#{layout.label})", class: "btn btn-primary", onclick: "return add_fields(this, \"section\", \"#{escape_javascript(fields)}\")")
+%br
+%br
 %ul.list.sortable_sections
-  - sub_pages ||= section
+  - sub_pages ||= section.sub_pages
   - sub_pages.each_with_index do |sub_page, idx|
-    - namespace = { }
-    - tags = sub_page.tags(true).select{|t| t.is_cms_block?}.uniq{|t| t.identifier}
-    - tags.each do |tag|
-      - namespace[tag.namespace || 'default'] ||= []
-      - namespace[tag.namespace || 'default'] << tag
-
-    
-    %li{:id => dom_id(sub_page)}
-      = fields_for :section_blocks, nil, :builder => ComfortableMexicanSofa::FormBuilder, :layout => :horizontal do |cms_blocks|
-        = hidden_field_tag "[sections_attributes][#{sub_page.id}]id", sub_page.id
-        = hidden_field_tag "[sections_attributes][#{sub_page.id}]position", sub_page.position, class: "position"
-
-        - tags.each_with_index do |tag, tag_idx|
-          - begin
-            = cms_blocks.send(tag.class.to_s.demodulize.underscore, tag, (sub_page.id.to_i * 100 +tag_idx), "[sections_attributes][#{sub_page.id}]")
-          - rescue
-            - Rails.env.production?? nil : raise
-
-      - if sub_pages.count > 1
-        .icon{:class => 'published' }
-          .dragger
-            %span &#8645;
-        = link_to comfy_admin_cms_site_page_path(@site, sub_page), :method => :delete, :data => {:confirm => "Sicher"}, :class => 'btn btn-danger' do
-          %span.glyphicon.glyphicon-remove
+    = render "section_fields", sub_page: sub_page
 
 %hr

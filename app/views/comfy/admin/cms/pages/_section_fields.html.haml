@@ -1,0 +1,25 @@
+- section_id = sub_page.new_record? ? "new_section" : sub_page.id
+- namespace = { }
+- tags = sub_page.tags(true).select{|t| t.is_cms_block?}.uniq{|t| t.identifier}
+- tags.each do |tag|
+  - namespace[tag.namespace || 'default'] ||= []
+  - namespace[tag.namespace || 'default'] << tag
+
+%li{:id => dom_id(sub_page), :class => "fields"}
+  = fields_for :section_blocks, nil, :builder => ComfortableMexicanSofa::FormBuilder, :layout => :horizontal do |cms_blocks|
+    = hidden_field_tag("[page][sections_attributes][#{section_id}]id", section_id) unless sub_page.new_record?
+    = hidden_field_tag("[page][sections_attributes][#{section_id}]tag_identifier", sub_page.tag_identifier)
+    = hidden_field_tag("[page][sections_attributes][#{section_id}]layout_id", sub_page.layout_id) 
+    = hidden_field_tag "[page][sections_attributes][#{section_id}]position", sub_page.position, class: "position"
+
+    - tags.each_with_index do |tag, tag_idx|
+      - begin
+        = cms_blocks.send(tag.class.to_s.demodulize.underscore, tag, (sub_page.id.to_i * 100 +tag_idx), "[page][sections_attributes][#{section_id}]")
+      - rescue
+        - Rails.env.production?? nil : raise
+
+  .icon{:class => 'published' }
+    .dragger
+      %span &#8645;
+  = hidden_field_tag "[page][sections_attributes][#{section_id}]_destroy", false
+  = content_tag(:button, "X", class: "btn btn-mini btn-danger", onclick: "return remove_fields(this)")

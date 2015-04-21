@@ -76,6 +76,7 @@ module ComfortableMexicanSofa::Fixture
       ComfortableMexicanSofa::Fixture::Layout::Exporter.new(  from, to).export!
       ComfortableMexicanSofa::Fixture::Page::Exporter.new(    from, to).export!
       ComfortableMexicanSofa::Fixture::Snippet::Exporter.new( from, to).export!
+      ComfortableMexicanSofa::Fixture::Section::Exporter.new( from, to).export!
     end
   end
   

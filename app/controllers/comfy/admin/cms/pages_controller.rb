@@ -38,18 +38,7 @@ class Comfy::Admin::Cms::PagesController < Comfy::Admin::Cms::BaseController
   end
 
   def update
-    @page.transaction do 
-      if params[:sections_attributes]
-        params[:sections_attributes].values.each do |section|
-          p = Comfy::Cms::Page.find(section[:id])
-          p.blocks_attributes = section[:blocks_attributes]
-          p.position = section[:position]
-          p.save
-        end
-      end
-
-      @page.save!
-    end
+    @page.save!
     flash[:success] = I18n.t('comfy.admin.cms.pages.updated')
     redirect_to :action => :edit, :id => @page
   rescue ActiveRecord::RecordInvalid

@@ -8,6 +8,7 @@ class Comfy::Cms::Page < ActiveRecord::Base
   cms_is_mirrored
   cms_manageable
   cms_has_revisions_for :blocks_attributes
+  include PageSections
 
   # -- Relationships --------------------------------------------------------
   belongs_to :site

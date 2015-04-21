@@ -21,4 +21,5 @@
 #= require comfy/admin/cms/base
 #= require comfy/admin/cms/uploader
 #= require comfy/admin/cms/files
+#= require comfy/admin/cms/section
 #= require comfy/admin/cms/custom
