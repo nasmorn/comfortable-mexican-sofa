@@ -1,10 +1,27 @@
-- block ||= page_form
+.page-files
+  = hidden_field_tag field_name, tag.serialize_content
 
-- if (files = block.files).present?
-  .files
-    - files.each do |file|
-      - file_thumb = image_tag(file.file.url(:cms_thumb)) if file.is_image?
-      .file{:id => dom_id(file), :data => {:toggle => 'page-file-popover', :content => file_thumb}}
-        = link_to file.file_file_name, file.file.url, :target => '_blank'
-        = link_to comfy_admin_cms_site_file_path(@site, file), :method => :delete, :remote => true, :data => {:confirm => t('.are_you_sure')}, :class => 'delete' do
-          %i.glyphicon.glyphicon-remove-circle
+  / This serves as a template for new files.
+  .page-file{ id: "page_file_#{tag.identifier}", style: 'display: none;'}
+    = link_to '#', target: '_blank', class: 'thumbnail' do
+      = image_tag 'comfortable_mexican_sofa/icon_page.gif'
+    .file-label file.label
+    %br
+    = link_to 'Change', '#', class: 'cms-files-open btn btn-default btn-xs', data: { mode: 'select', field_name: field_name, on_select: 'selectCmsPageFile' }
+    = link_to 'Delete', '#', class: 'cms-page-file-delete btn btn-danger btn-xs', data: { field_name: field_name, ask: t('.are_you_sure', default: 'Are you sure?') }
+
+  - if (files = tag.content).present?
+    - (files.respond_to?(:each) ? files : [files]).each do |file|
+      - id = "page_file_#{tag.identifier}_#{file.id}"
+      .page-file{id: id}
+        = link_to file.file.url, target: '_blank', class: 'thumbnail' do
+          - if file.is_image?
+            = image_tag file.file.url(:cms_thumb)
+          - else
+            = image_tag 'comfortable_mexican_sofa/icon_page.gif'
+        .file-label= file.label
+        %br
+        = link_to 'Change', '#', class: 'cms-files-open btn btn-default btn-xs', data: { mode: 'select', field_name: field_name, on_select: 'selectCmsPageFile', current_page_file: id }
+        = link_to 'Delete', '#', class: 'cms-page-file-delete btn btn-danger btn-xs', data: { field_name: field_name, ask: t('.are_you_sure', default: 'Are you sure?') }
+
+  = link_to 'Select', '#', class: 'cms-files-open btn btn-default', style: "display: #{files.present? ? 'none' : 'inline-block'};", data: { mode: 'select', field_name: field_name, on_select: 'selectCmsPageFile' }

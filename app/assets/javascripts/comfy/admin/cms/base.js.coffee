@@ -191,7 +191,7 @@ window.CMS.categories = ->
     $('.categories.editable', '.categories-widget').toggle()
     $('.edit', '.categories-widget').toggle()
     $('.done', '.categories-widget').toggle()
-
+    
 
 # If we are inside an iframe remove the columns and just keep the center column content.
 # This is used for the files widget that opens in a modal window.
