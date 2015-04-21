@@ -36,19 +36,19 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
   end
 
   def field_date_time(tag, index, fieldname = nil)
-    default_tag_field(tag, index, :text_field_tag, :data => {'cms-datetime' => true}, fieldname: fieldnam)
+    default_tag_field(tag, index, :text_field_tag, :data => {'cms-datetime' => true}, fieldname: fieldname)
   end
 
   def field_integer(tag, index, fieldname = nil)
-    default_tag_field(tag, index, :number_field_tag, fieldname: fieldnam)
+    default_tag_field(tag, index, :number_field_tag, fieldname: fieldname)
   end
 
   def field_string(tag, index, fieldname = nil)
-    default_tag_field(tag, index, fieldname: fieldnam)
+    default_tag_field(tag, index, :text_field_tag, fieldname: fieldname)
   end
 
   def field_text(tag, index, fieldname = nil)
-    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/html'}, fieldname: fieldnam)
+    default_tag_field(tag, index, :text_area_tag, :data => {'cms-cm-mode' => 'text/html'}, fieldname: fieldname)
   end
 
   def field_rich_text(tag, index, fieldname = nil)
