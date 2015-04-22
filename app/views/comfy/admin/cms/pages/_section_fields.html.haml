@@ -22,4 +22,5 @@
     .dragger
       %span &#8645;
   = hidden_field_tag "[page][sections_attributes][#{section_id}]_destroy", false
-  = content_tag(:button, "X", class: "btn btn-mini btn-danger", onclick: "return remove_fields(this)")
+  = content_tag(:button, class: "btn btn-mini btn-danger remove-fields", onclick: "return remove_fields(this)") do
+    %i{class: "glyphicon glyphicon-remove"}
