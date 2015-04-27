@@ -14,7 +14,7 @@ class Comfy::Admin::Cms::FilesController < Comfy::Admin::Cms::BaseController
       when 'image'
         file_scope.images.collect do |image|
           { :thumb => image.file.url(:cms_thumb),
-            :image => image.file.url,
+            :image => image.file.url(ComfortableMexicanSofa.config.redactor_image_style),
             :title => image.label }
         end
       else
