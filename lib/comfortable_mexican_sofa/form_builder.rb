@@ -107,4 +107,9 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     @template.render(:partial => 'comfy/admin/cms/pages/section', :object => tag)
   end
 
+  # The tag just outputs the identifier of the snippet or page
+  def page_identifier(tag, index, fieldname = nil)
+    ""
+  end
+
 end

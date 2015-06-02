@@ -52,10 +52,12 @@ protected
 
   def build_snippet
     @snippet = @site.snippets.new(snippet_params)
+    @snippet.layout ||= @site.layouts.find_by(identifier: "snippet")
   end
 
   def load_snippet
     @snippet = @site.snippets.find(params[:id])
+    @snippet.layout ||= @site.layouts.find_by(identifier: "snippet")
   rescue ActiveRecord::RecordNotFound
     flash[:danger] = I18n.t('comfy.admin.cms.snippets.not_found')
     redirect_to :action => :index

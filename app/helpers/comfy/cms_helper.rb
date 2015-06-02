@@ -34,7 +34,7 @@ module Comfy::CmsHelper
       )
     end
 
-    snippet ? snippet.content : ''
+    snippet ? snippet.render : ''
   end
 
   # Same as cms_snippet_content but cms tags will be expanded

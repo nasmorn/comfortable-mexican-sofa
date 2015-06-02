@@ -47,12 +47,18 @@ protected
   end
 
   def load_fixtures
-    return unless ComfortableMexicanSofa.config.enable_fixtures
-
-    controllers = %w(layouts pages snippets files).collect{|c| 'comfy/admin/cms/' + c}
-    if controllers.member?(params[:controller]) && params[:action] == 'index'
-      ComfortableMexicanSofa::Fixture::Importer.new(@site.identifier).import!
-      flash.now[:danger] = I18n.t('comfy.admin.cms.base.fixtures_enabled')
-    end
+    if ComfortableMexicanSofa.config.enable_fixtures
+      controllers = %w(layouts pages snippets files).collect{|c| 'comfy/admin/cms/' + c}
+      if controllers.member?(params[:controller]) && params[:action] == 'index'
+        ComfortableMexicanSofa::Fixture::Importer.new(@site.identifier).import!
+        flash.now[:danger] = I18n.t('comfy.admin.cms.base.fixtures_enabled')
+      end
+    elsif ComfortableMexicanSofa.config.enable_layout_fixtures
+      controllers = %w(layouts pages snippets).collect{|c| 'comfy/admin/cms/' + c}
+      if controllers.member?(params[:controller]) && params[:action] == 'index'
+        ComfortableMexicanSofa::Fixture::Importer.new(@site.identifier).import_layouts!
+        flash.now[:danger] = I18n.t('comfy.admin.cms.base.fixtures_enabled')
+      end      
+    end      
   end
 end

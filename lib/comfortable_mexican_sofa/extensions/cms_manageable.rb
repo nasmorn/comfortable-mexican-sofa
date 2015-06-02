@@ -64,7 +64,7 @@ module ComfortableMexicanSofa::CmsManageable
       return '' unless layout
 
       ComfortableMexicanSofa::Tag.process_content(
-        self, ComfortableMexicanSofa::Tag.sanitize_irb(layout.merged_content)
+        self, layout.merged_content#ComfortableMexicanSofa::Tag.sanitize_irb(layout.merged_content)
       )
     end
 

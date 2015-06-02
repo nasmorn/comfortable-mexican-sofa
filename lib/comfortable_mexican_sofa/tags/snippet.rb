@@ -13,7 +13,7 @@ class ComfortableMexicanSofa::Tag::Snippet
   end
   
   def content
-    snippet.content
+    snippet.render
   end
   
 end

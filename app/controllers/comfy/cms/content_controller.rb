@@ -46,8 +46,11 @@ protected
   end
 
   def load_fixtures
-    return unless ComfortableMexicanSofa.config.enable_fixtures
-    ComfortableMexicanSofa::Fixture::Importer.new(@cms_site.identifier).import!
+    if ComfortableMexicanSofa.config.enable_fixtures
+      ComfortableMexicanSofa::Fixture::Importer.new(@cms_site.identifier).import!
+    elsif ComfortableMexicanSofa.config.enable_layout_fixtures
+      ComfortableMexicanSofa::Fixture::Importer.new(@cms_site.identifier).import_layouts!
+    end
   end
 
   def load_cms_page

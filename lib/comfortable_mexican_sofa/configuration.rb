@@ -29,6 +29,10 @@ class ComfortableMexicanSofa::Configuration
   # destroyed if there's no corresponding file. Fixtures are disabled by default.
   attr_accessor :enable_fixtures
 
+  # With each page load only the layouts are synchedwith the database. Database entries are
+  # destroyed if there's no corresponding file. Fixtures are disabled by default.
+  attr_accessor :enable_layout_fixtures
+
   # Path where fixtures can be located.
   attr_accessor :fixtures_path
 
@@ -90,6 +94,7 @@ class ComfortableMexicanSofa::Configuration
     @enable_sitemap       = true
     @upload_file_options  = { }
     @enable_fixtures      = false
+    @enable_layout_fixtures = false
     @fixtures_path        = File.expand_path('db/cms_fixtures', Rails.root)
     @revisions_limit      = 25
     @locales              = {
