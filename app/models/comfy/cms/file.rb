@@ -57,7 +57,7 @@ protected
 
   def assign_position
     max = Comfy::Cms::File.maximum(:position)
-    self.position = max ? max + 1 : 0
+    self.position = 0
   end
 
   def reload_blockable_cache
