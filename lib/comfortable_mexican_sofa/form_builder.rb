@@ -3,9 +3,18 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     tag.blockable.class.name.demodulize.underscore.gsub(/\//,'_')
   end
 
+  def label_text_for(tag)
+    I18n.t("admin.label.#{tag.blockable.class.name.underscore}.#{tag.identifier.to_s}", default: tag.identifier.to_s.humanize)
+  end
+
+  def add_help_text(tag, content)
+    help_text = I18n.t("admin.help.#{tag.blockable.class.name.underscore}.#{tag.identifier.to_s}", default: "")
+    content << content_tag(:p, help_text, class: "help-block") unless help_text.blank?    
+  end
+
   # -- Tag Field Fields -----------------------------------------------------
   def default_tag_field(tag, index, method = :text_field_tag, options = {})
-    label       = tag.blockable.class.human_attribute_name(tag.identifier.to_s)
+    label       = label_text_for(tag)
     content     = ''
     fieldname   = options.delete(:fieldname) || field_name_for(tag)
 
@@ -18,7 +27,9 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     end
     content << @template.hidden_field_tag("#{fieldname}[blocks_attributes][#{index}][identifier]", tag.identifier, :id => nil)
 
-    form_group :label => {:text => label} do
+    add_help_text(tag, content)
+
+    form_group :label => {:text => label } do
       content.html_safe
     end
   end
@@ -48,7 +59,8 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     content = @template.hidden_field_tag("#{fieldname}[blocks_attributes][#{index}][content]", '', :id => nil)
     content << @template.check_box_tag("#{fieldname}[blocks_attributes][#{index}][content]", '1', tag.content.present?, :id => nil)
     content << @template.hidden_field_tag("#{fieldname}[blocks_attributes][#{index}][identifier]", tag.identifier, :id => nil)
-    form_group :label => {:text => (tag.blockable.class.human_attribute_name(tag.identifier.to_s) || tag.identifier.titleize + "?")} do
+    add_help_text(tag, content)
+    form_group :label => {:text => label_text_for(tag)} do
       content
     end
   end
@@ -98,7 +110,9 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
       :id => nil
     )
     content << @template.hidden_field_tag("#{fieldname}[blocks_attributes][#{index}][identifier]", tag.identifier, :id => nil)
-    form_group :label => {:text => tag.identifier.titleize}, :class => tag.class.to_s.demodulize.underscore do
+
+    add_help_text(tag, content)
+    form_group :label => {:text => label_text_for(tag)}, :class => tag.class.to_s.demodulize.underscore do
       content
     end
   end
@@ -110,6 +124,10 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
   # The tag just outputs the identifier of the snippet or page
   def page_identifier(tag, index, fieldname = nil)
     ""
+  end
+
+  def field_comment(tag, index, fieldname = nil)
+    content_tag :h2, label_text_for(tag)
   end
 
 end
