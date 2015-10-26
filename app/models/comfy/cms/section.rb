@@ -7,7 +7,7 @@ class Comfy::Cms::Section < ActiveRecord::Base
   cms_manageable
 
   # -- Relationships --------------------------------------------------------
-  belongs_to :page
+  belongs_to :page, :touch => true
   belongs_to :layout
 
   # -- Callbacks ------------------------------------------------------------

@@ -51,7 +51,12 @@ module Comfy::CmsHelper
   #   cms_block_content(:left_column, CmsPage.first)
   #   cms_block_content(:left_column) # if @cms_page is present
   def cms_block_content(identifier, blockable = @cms_page)
-    tag = blockable && (block = blockable.blocks.find_by_identifier(identifier)) && block.tag
+    tag = blockable 
+    tag = if blockable && blockable.blocks.loaded?
+      tag && (block = blockable.blocks.select {|b| b.identifier == identifier }.first) && block.tag
+    else
+      tag && (block = blockable.blocks.find_by_identifier(identifier)) && block.tag
+    end
     return '' unless tag
     tag.content
   end
