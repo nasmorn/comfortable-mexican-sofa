@@ -11,7 +11,7 @@ class ComfortableMexicanSofa::Tag::PageText
   end
   
   def render
-    content.gsub(/\A"/, "\u201C").gsub(/"\z/, "\u201D")
+    content.gsub("'", '"')
   end
   
 end
