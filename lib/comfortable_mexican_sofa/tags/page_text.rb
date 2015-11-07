@@ -10,4 +10,8 @@ class ComfortableMexicanSofa::Tag::PageText
     block.content
   end
   
+  def render
+    content.gsub(/\A"/, "\u201C").gsub(/"\z/, "\u201D")
+  end
+  
 end
