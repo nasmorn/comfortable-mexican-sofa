@@ -10,7 +10,4 @@ class ComfortableMexicanSofa::Tag::PageString
     block.content
   end
   
-  def render
-    content.gsub("'", '"')
-  end
 end
