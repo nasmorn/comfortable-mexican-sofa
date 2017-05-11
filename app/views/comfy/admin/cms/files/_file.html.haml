@@ -19,7 +19,7 @@
     .content-type
       = truncate(file.file_content_type)
     .file-size
-      = number_to_human_size(file.file_file_size, :locale => :en)
+      = number_to_human_size(file.file_file_size)
   %td
     .btn-group.btn-group-sm
       = link_to 'Select', '#', :class => 'btn btn-default cms-files-select-file', :data => { :file_id => file.id, :file_label => file.label, :file_url => file.file.url, :file_thumbnail => file.file.url(:cms_thumb), :file_is_image => file.is_image? }, :style => 'display: none;'

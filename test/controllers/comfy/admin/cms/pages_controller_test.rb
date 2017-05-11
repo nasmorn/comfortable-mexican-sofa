@@ -449,6 +449,28 @@ class Comfy::Admin::Cms::PagesControllerTest < ActionController::TestCase
     end
   end
 
+  def test_preview_language
+    site = @site
+    site.update_columns(:locale => 'de')
+    layout = comfy_cms_layouts(:default)
+
+    assert_equal :en, I18n.locale
+
+    post :create, :site_id => site, :preview => 'Preview', :page => {
+      :label      => 'Test Page',
+      :slug       => 'test-page',
+      :parent_id  => comfy_cms_pages(:default).id,
+      :layout_id  => layout.id,
+      :blocks_attributes => [
+        { :identifier => 'default_page_text',
+          :content    => 'preview content' }
+      ]
+    }
+
+    assert_response :success
+    assert_equal :de, I18n.locale
+  end
+
   def test_get_new_with_no_layout
     Comfy::Cms::Layout.destroy_all
     get :new, :site_id => @site
@@ -496,4 +518,5 @@ class Comfy::Admin::Cms::PagesControllerTest < ActionController::TestCase
     assert_equal 1, page_one.position
     assert_equal 0, page_two.position
   end
+  
 end

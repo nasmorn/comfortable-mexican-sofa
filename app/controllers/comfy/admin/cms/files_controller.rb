@@ -40,11 +40,18 @@ class Comfy::Admin::Cms::FilesController < Comfy::Admin::Cms::BaseController
   end
 
   def create
+    if params[:category]
+      ids = @site.categories.of_type('Comfy::Cms::File')
+        .where(:label => params[:category])
+        .each_with_object({}){|c, h| h[c.id] = 1}
+      @file.category_ids = ids
+    end
+    
     @file.save!
 
     case params[:source]
     when 'plupload'
-      render :text => render_to_string(:partial => 'file', :object => @file)
+      render :body => render_to_string(:partial => 'file', :object => @file)
     when 'redactor'
       render :json => {:filelink => @file.file.url, :filename => @file.label}
     else
@@ -55,9 +62,9 @@ class Comfy::Admin::Cms::FilesController < Comfy::Admin::Cms::BaseController
   rescue ActiveRecord::RecordInvalid
     case params[:source]
     when 'plupload'
-      render :text => @file.errors.full_messages.to_sentence, :status => :unprocessable_entity
+      render :body => @file.errors.full_messages.to_sentence, :status => :unprocessable_entity
     when 'redactor'
-      render :nothing => true, :status => :unprocessable_entity
+      render body: nil, :status => :unprocessable_entity
     else
       flash.now[:danger] = I18n.t('comfy.admin.cms.files.creation_failure')
       render :action => :new
@@ -91,7 +98,7 @@ class Comfy::Admin::Cms::FilesController < Comfy::Admin::Cms::BaseController
         cms_file.update_column(:position, index)
       end
     end
-    render :nothing => true
+    head :ok
   end
 
 protected
@@ -108,7 +115,8 @@ protected
   end
 
   def file_params
-    unless (file = params[:file]).is_a?(Hash)
+    file = params[:file]
+    unless file.is_a?(Hash) || file.respond_to?(:to_unsafe_hash)
       params[:file] = { }
       params[:file][:file] = file
     end
