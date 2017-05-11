@@ -20,6 +20,18 @@ class Comfy::Cms::ContentControllerTest < ActionController::TestCase
       layout_content_c'
     ), response.body
     assert_equal 'text/html', response.content_type
+
+    assert_equal :en, assigns(:locale)
+    assert_equal :en, I18n.locale
+  end
+
+  def test_show_with_locale
+    comfy_cms_sites(:default).update_column(:locale, 'fr')
+    get :show, :cms_path => ''
+    assert_response :success
+
+    assert_equal :fr, assigns(:locale)
+    assert_equal :fr, I18n.locale
   end
 
   def test_show_default_html
@@ -49,10 +61,10 @@ class Comfy::Cms::ContentControllerTest < ActionController::TestCase
     assert_equal page.id,         json_response['id']
     assert_equal page.site.id,    json_response['site_id']
     assert_equal page.layout.id,  json_response['layout_id']
-    assert_equal nil,             json_response['parent_id']
-    assert_equal nil,             json_response['target_page_id']
+    assert_nil                    json_response['parent_id']
+    assert_nil                    json_response['target_page_id']
     assert_equal 'Default Page',  json_response['label']
-    assert_equal nil,             json_response['slug']
+    assert_nil                    json_response['slug']
     assert_equal '/',             json_response['full_path']
     assert_equal content,         json_response['content_cache']
     assert_equal 0,               json_response['position']

@@ -17,7 +17,10 @@ class Comfy::Admin::Cms::SnippetsControllerTest < ActionController::TestCase
   end
 
   def test_get_index_with_category
-    category = comfy_cms_sites(:default).categories.create!(:label => 'Test Category', :categorized_type => 'Comfy::Cms::Snippet')
+    category = comfy_cms_sites(:default).categories.create!(
+      :label            => 'Test Category', 
+      :categorized_type => 'Comfy::Cms::Snippet'
+    )
     category.categorizations.create!(:categorized => comfy_cms_snippets(:default))
 
     get :index, :site_id => comfy_cms_sites(:default), :category => category.label
