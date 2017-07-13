@@ -124,9 +124,13 @@ window.CMS.sortable_sections = ->
   $('.sortable_sections').sortable
     handle: 'div.dragger'
     axis:   'y'
-    update: (event, ui)-> 
-      i = 0
-      $(item).children(".position").val(i++) for item in $(this).children("li")
+    update: (event, ui) ->
+      window.CMS.sort_section(this)
+
+
+window.CMS.sort_section = (list) ->
+  i = 0
+  $(item).children(".position").val(i++) for item in $(list).children("li")
 
 window.CMS.timepicker = ->
   $('input[type=text][data-cms-datetime]').datetimepicker
@@ -191,7 +195,7 @@ window.CMS.categories = ->
     $('.categories.editable', '.categories-widget').toggle()
     $('.edit', '.categories-widget').toggle()
     $('.done', '.categories-widget').toggle()
-    
+
 
 # If we are inside an iframe remove the columns and just keep the center column content.
 # This is used for the files widget that opens in a modal window.

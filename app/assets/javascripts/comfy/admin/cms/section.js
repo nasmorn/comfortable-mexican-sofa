@@ -7,13 +7,17 @@ function remove_fields(link) {
 function append_fields(link, association, content) {
         var new_id = new Date().getTime();
         var regexp = new RegExp("new_" + association, "g");
-        $(link).parents('.cms-section').children("ul.list").append(content.replace(regexp, new_id));
+        list = $(link).parents('.cms-section').children("ul.list")
+        list.append(content.replace(regexp, new_id));
+        window.CMS.sort_section(list)
         return false;
 }
 
 function prepend_fields(link, association, content) {
         var new_id = new Date().getTime();
         var regexp = new RegExp("new_" + association, "g");
-        $(link).parents('.cms-section').children("ul.list").prepend(content.replace(regexp, new_id));
+        list = $(link).parents('.cms-section').children("ul.list")
+        list.prepend(content.replace(regexp, new_id));
+        window.CMS.sort_section(list)
         return false;
 }
