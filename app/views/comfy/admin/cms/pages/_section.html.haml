@@ -1,12 +1,22 @@
-%hr
-- Comfy::Cms::Section.layouts(section.layouts).each do |layout|
-  - fields = render("section_fields", sub_page: Comfy::Cms::Section.new(layout_id: layout.id, tag_identifier: section.identifier) )
-  = content_tag(:button, "Neuer Block (#{layout.label})", class: "btn btn-primary", onclick: "return add_fields(this, \"section\", \"#{escape_javascript(fields)}\")")
-%br
-%br
-%ul.list.sortable_sections
-  - sub_pages ||= section.sub_pages
-  - sub_pages.each_with_index do |sub_page, idx|
-    = render "section_fields", sub_page: sub_page
+.cms-section
+  %hr
+  - Comfy::Cms::Section.layouts(section.layouts).each do |layout|
+    - fields = render("section_fields", sub_page: Comfy::Cms::Section.new(layout_id: layout.id, tag_identifier: section.identifier) )
+    .btn-group
+      = content_tag(:button, class: "btn btn-primary", onclick: "return prepend_fields(this, \"section\", \"#{escape_javascript(fields)}\")") do
+        %span.glyphicon.glyphicon-plus
+        = layout.label.gsub('Section ', '')
+      = content_tag(:button, class: "btn btn-primary dropdown-toggle", 'data-toggle' => "dropdown") do
+        %span.caret
+      %ul.dropdown-menu
+        %li
+          = content_tag(:a, href: '#', onclick: "return append_fields(this, \"section\", \"#{escape_javascript(fields)}\")") do
+            Als letztes Element
+  %br
+  %br
+  %ul.list.sortable_sections
+    - sub_pages ||= section.sub_pages
+    - sub_pages.each_with_index do |sub_page, idx|
+      = render "section_fields", sub_page: sub_page
 
-%hr
+  %hr

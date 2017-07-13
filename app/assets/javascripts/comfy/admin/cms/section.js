@@ -4,9 +4,16 @@ function remove_fields(link) {
         return false;
 }
 
-function add_fields(link, association, content) {
+function append_fields(link, association, content) {
         var new_id = new Date().getTime();
         var regexp = new RegExp("new_" + association, "g");
-        $(link).nextAll("ul").append(content.replace(regexp, new_id));
+        $(link).parents('.cms-section').children("ul.list").append(content.replace(regexp, new_id));
+        return false;
+}
+
+function prepend_fields(link, association, content) {
+        var new_id = new Date().getTime();
+        var regexp = new RegExp("new_" + association, "g");
+        $(link).parents('.cms-section').children("ul.list").prepend(content.replace(regexp, new_id));
         return false;
 }

@@ -9,7 +9,7 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
 
   def add_help_text(tag, content)
     help_text = I18n.t("admin.help.#{tag.blockable.class.name.underscore}.#{tag.identifier.to_s}", default: "")
-    content << content_tag(:p, help_text, class: "help-block") unless help_text.blank?    
+    content << content_tag(:p, help_text, class: "help-block") unless help_text.blank?
   end
 
   # -- Tag Field Fields -----------------------------------------------------
@@ -54,7 +54,7 @@ class ComfortableMexicanSofa::FormBuilder < BootstrapForm::FormBuilder
     default_tag_field(tag, index, :text_area_tag, :data => {'cms-rich-text' => true}, fieldname: fieldname)
   end
 
-  def field_boolean(tag, index)
+  def field_boolean(tag, index, fieldname = nil)
     fieldname = field_name_for(tag)
     content = @template.hidden_field_tag("#{fieldname}[blocks_attributes][#{index}][content]", '', :id => nil)
     content << @template.check_box_tag("#{fieldname}[blocks_attributes][#{index}][content]", '1', tag.content.present?, :id => nil)
