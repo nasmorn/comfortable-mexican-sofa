@@ -10,7 +10,6 @@ window.CMS.init = ->
   CMS.set_iframe_layout()
   CMS.slugify()
   CMS.wysiwyg()
-  CMS.codemirror()
   CMS.sortable_list()
   CMS.sortable_sections()
   CMS.timepicker()
@@ -94,22 +93,6 @@ window.CMS.wysiwyg = ->
     lang:             CMS.locale
     convertDivs:      false
 
-
-window.CMS.codemirror = ->
-  $('textarea[data-cms-cm-mode]').each (i, element) ->
-    cm = CodeMirror.fromTextArea element,
-      mode:           $(element).data('cms-cm-mode')
-      lineWrapping:   true
-      autoCloseTags:  true
-      lineNumbers:    true
-    CMS.code_mirror_instances.push(cm)
-    $(cm.display.wrapper).resizable resize: ->
-      cm.setSize($(@).width(), $(@).height())
-      cm.refresh()
-
-  $('a[data-toggle="tab"]').on 'shown.bs.tab', ->
-    for cm in CMS.code_mirror_instances
-      cm.refresh()
 
 
 window.CMS.sortable_list = ->

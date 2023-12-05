@@ -1,13 +1,6 @@
 #= require jquery
 #= require jquery_ujs
 #= require jquery-ui
-#= require codemirror
-#= require codemirror/modes/css
-#= require codemirror/modes/htmlmixed
-#= require codemirror/modes/javascript
-#= require codemirror/modes/markdown
-#= require codemirror/modes/xml
-#= require codemirror/addons/edit/closetag
 #= require bootstrap-sprockets
 #= require comfy/admin/cms/lib/bootstrap-datetimepicker
 #= require comfy/admin/cms/lib/diff
